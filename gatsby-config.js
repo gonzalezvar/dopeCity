@@ -49,7 +49,8 @@ if (
  */
 module.exports = {
     siteMetadata: {
-        siteUrl: process.env.SITEURL || config.siteUrl,
+        siteUrl: "https://www.dopCity.com",
+        title:"First site"
     },
     trailingSlash: 'always',
     plugins: [
