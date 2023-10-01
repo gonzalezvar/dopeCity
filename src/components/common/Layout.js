@@ -2,13 +2,14 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { Link, StaticQuery, graphql } from "gatsby";
-import { GatsbyImage } from "gatsby-plugin-image";
-
 import { Navigation } from ".";
-import config from "../../utils/siteConfig";
+import { useLocation } from "@reach/router";
 
 // Styles
 import "../../styles/app.css";
+import { PostCard } from "./PostCard";
+import { About } from "./about";
+
 
 /**
  * Main layout component
@@ -20,13 +21,7 @@ import "../../styles/app.css";
  */
 const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
     const site = data.allGhostSettings.edges[0].node;
-    const twitterUrl = site.twitter
-        ? `https://twitter.com/${site.twitter.replace(/^@/, ``)}`
-        : null;
-    const facebookUrl = site.facebook
-        ? `https://www.facebook.com/${site.facebook.replace(/^\//, ``)}`
-        : null;
-
+    const location = useLocation();
     return <>
         <Helmet>
             <html lang={site.lang} />
@@ -40,102 +35,50 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
                 <header
                     className="site-head"
                     style={{
-                        ...(site.cover_image && {
-                            backgroundImage: `url(${site.cover_image})`,
-                        }),
+                        backgroundImage: `url(https://raw.githubusercontent.com/gonzalezvar/Imagenes/main/banner.png)`,
+                        backgroundSize: "contain",
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: "black",
+
                     }}
                 >
                     <div className="container">
                         <div className="site-mast">
                             <div className="site-mast-left">
                                 <Link to="/">
-                                    {site.logo ? (
-                                        <img
-                                            className="site-logo"
-                                            src={site.logo}
-                                            alt={site.title}
-                                        />
-                                    ) : (
-                                        <GatsbyImage image={data.file.childImageSharp.gatsbyImageData} alt={site.title} />
-                                    )}
-                                </Link>
-                            </div>
-                            <div className="site-mast-right">
-                                {site.twitter && (
-                                    <a
-                                        href={twitterUrl}
-                                        className="site-nav-item"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img
-                                            className="site-nav-icon"
-                                            src="/images/icons/twitter.svg"
-                                            alt="Twitter"
-                                        />
-                                    </a>
-                                )}
-                                {site.facebook && (
-                                    <a
-                                        href={facebookUrl}
-                                        className="site-nav-item"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <img
-                                            className="site-nav-icon"
-                                            src="/images/icons/facebook.svg"
-                                            alt="Facebook"
-                                        />
-                                    </a>
-                                )}
-                                <a
-                                    className="site-nav-item"
-                                    href={`https://feedly.com/i/subscription/feed/${config.siteUrl}/rss/`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
                                     <img
-                                        className="site-nav-icon"
-                                        src="/images/icons/rss.svg"
-                                        alt="RSS Feed"
+                                        className="site-logo"
+                                        src="https://raw.githubusercontent.com/gonzalezvar/Imagenes/main/icon.png"
+                                        style={{
+                                            transform: "scale(2)"
+                                        }}
                                     />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         {isHome ? (
                             <div className="site-banner">
                                 <h1 className="site-banner-title">
-                                    {site.title}
+                                    DopeCity
                                 </h1>
-                                <p className="site-banner-desc">
-                                    {site.description}
-                                </p>
                             </div>
                         ) : null}
                         <nav className="site-nav">
-                            <div className="site-nav-left">
-                                {/* The navigation items as setup in Ghost */}
-                                <Navigation
-                                    data={site.navigation}
-                                    navClass="site-nav-item"
-                                />
-                            </div>
-                            <div className="site-nav-right">
+                            <div className="site-nav-lef" style={{marginTop:"10px",marginLeft:"-10px"}}>
                                 <Link
                                     className="site-nav-button"
-                                    to="/about"
+                                    to={location.pathname == "/about/" ? "/": "/about"} 
                                 >
-                                    About
+                                    {location.pathname !== '/about/' ? "Sobre nosotros": "Inicio"}
                                 </Link>
                             </div>
                         </nav>
                     </div>
                 </header>
 
-                <main className="site-main">
-                    {/* All the main content gets inserted here, index.js, post.js */}
-                    {children}
+                <main style={{display:"flex",flexDirection:"column",alignContent:"center",justifyContent:"center"}}>
+                {location.pathname === '/about/' ? <About/>: <PostCard/>}
                 </main>
             </div>
 
