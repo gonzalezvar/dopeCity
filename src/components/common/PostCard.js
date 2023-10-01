@@ -2,7 +2,6 @@ import * as React from "react";
 import "../../styles/card.css";
 
 export const PostCard = () => {
-    const ancho = window.innerWidth > 908;
     return (
         <div>
             <h2 style={{textAlign:"center", fontSize:"35px", marginBottom:"20px"}}>Mira un poco sobre nosotros</h2>
